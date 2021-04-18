@@ -1,21 +1,18 @@
 package com.kaf22.codezilla;
 
 import com.pi4j.io.gpio.*;
-import com.pi4j.wiringpi.Gpio;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.send.SendSticker;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.BufferedReader;
-import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,19 +69,23 @@ public class RPiBot extends TelegramLongPollingBot {
             SendMessage message = new SendMessage();
             message.setChatId(chatId);
 
-            while ((line = br.readLine()) != null)
-                message.setText(line);
+            while ((line = br.readLine()) != null){
+                log.info(line);
+                message.setText(line + "\nDate: " + LocalDate.now().getDayOfMonth() + "." + LocalDate.now().getMonth() + "." + LocalDate.now().getYear());
+            }
 
             execute(message);
+
         } else if (inputText.equals("Open the door")) {
             GpioController gpio = GpioFactory.getInstance();
 
-            Pin redLedPin = RaspiPin.GPIO_11;
+            Pin redLedPin = RaspiPin.GPIO_21;
             Pin greenLedPin = RaspiPin.GPIO_10;
             Pin buttonPin = RaspiPin.GPIO_06;
 
-            GpioPinDigitalOutput pin = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_11, "MyLED", PinState.LOW);
-            pin.toggle();
+            GpioPinDigitalOutput pin = gpio.provisionDigitalOutputPin(redLedPin, "Read", PinState.LOW);
+            pin.high();
+
 
         }
     }
