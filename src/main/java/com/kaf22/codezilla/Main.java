@@ -1,5 +1,6 @@
 package com.kaf22.codezilla;
 
+import com.pi4j.io.gpio.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
@@ -13,6 +14,10 @@ public class Main {
     public static void main(String[] args) {
         try {
             log.info("Bot starting...");
+
+            GpioController gpio = GpioFactory.getInstance();
+            GpioPinDigitalOutput pin = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_26, "Read", PinState.LOW);
+            pin.low();
 
             TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
             telegramBotsApi.registerBot(new RPiBot());

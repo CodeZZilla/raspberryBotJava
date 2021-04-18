@@ -79,11 +79,11 @@ public class RPiBot extends TelegramLongPollingBot {
         } else if (inputText.equals("Open the door")) {
             GpioController gpio = GpioFactory.getInstance();
 
-            Pin redLedPin = RaspiPin.GPIO_21;
-            Pin greenLedPin = RaspiPin.GPIO_10;
+            Pin redLedPin = RaspiPin.GPIO_26;
+            Pin greenLedPin = RaspiPin.GPIO_24;
             Pin buttonPin = RaspiPin.GPIO_06;
 
-            GpioPinDigitalOutput pin = gpio.provisionDigitalOutputPin(redLedPin, "Read", PinState.LOW);
+            GpioPinDigitalOutput pin = gpio.provisionDigitalOutputPin(redLedPin, "Read", PinState.HIGH);
             pin.high();
 
 
