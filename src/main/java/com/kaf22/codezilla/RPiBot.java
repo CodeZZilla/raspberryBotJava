@@ -65,7 +65,7 @@ public class RPiBot extends TelegramLongPollingBot {
 
             execute(message);
         } else if (inputText.equals("Information")) {
-            BufferedReader br = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("vcgenccmd measure_temp").getInputStream()));
+            BufferedReader br = new BufferedReader(new InputStreamReader(Runtime.getRuntime().exec("vcgencmd measure_temp").getInputStream()));
 
             String line;
 
