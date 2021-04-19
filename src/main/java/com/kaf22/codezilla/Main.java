@@ -15,8 +15,15 @@ public class Main {
         try {
             log.info("Bot starting...");
 
+
+
             GpioController gpio = GpioFactory.getInstance();
-            gpio.provisionDigitalOutputPin(RaspiPin.GPIO_29).low();
+            GpioPinDigitalOutput pin = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_29);
+            pin.low();
+            pin.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
+
+            gpio.shutdown();
+            gpio.unprovisionPin(pin);
 
             TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
             telegramBotsApi.registerBot(new RPiBot());

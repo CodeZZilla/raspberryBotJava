@@ -49,7 +49,7 @@ public class RPiBot extends TelegramLongPollingBot {
         if (inputText.startsWith("/start")) {
             keyboard.clear();
             keyboardFirstRow.clear();
-            keyboardFirstRow.add("Open the dor");
+            keyboardFirstRow.add("Open the door");
             keyboardFirstRow.add("Information");
             keyboard.add(keyboardFirstRow);
             replyKeyboardMarkup.setKeyboard(keyboard);
@@ -78,12 +78,17 @@ public class RPiBot extends TelegramLongPollingBot {
 
         } else if (inputText.equals("Open the door")) {
             log.info("Open the door");
+
             GpioController gpio = GpioFactory.getInstance();
+            GpioPinDigitalOutput pin = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_29);
+            pin.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
 
-            gpio.provisionDigitalOutputPin(RaspiPin.GPIO_29).high();
+            pin.high();
             Thread.sleep(3000);
-            gpio.provisionDigitalOutputPin(RaspiPin.GPIO_29).low();
+            pin.low();
 
+            gpio.shutdown();
+            gpio.unprovisionPin(pin);
 
         }
     }
